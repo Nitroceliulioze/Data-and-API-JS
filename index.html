@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data/APIs</title>
+  </head>
+  <body>
+    <img src="" id="rainbow" />
+    <p id="poem"></p>
+    <script>
+      const filenames = [
+        'images/Rink_Angelas.jpg',
+        'images/Rink_Arkliukas.jpg',
+        'images/Rink_Dovanele.jpg',
+        'images/Rink_Kiskio_metai.jpg'
+      ];
+
+      catchArrayofImages(filenames)
+        .then((response) => {
+          console.log("Yay to array of images!");
+        })
+        .catch((error) => {
+          console.log("error!");
+          console.error(error);
+        });
+
+      async function catchArrayofImages(filenames) {
+        for (let filename of filenames) {
+          const response = await fetch(filename);
+          const blob = await response.blob();
+          const img = document.createElement("img");
+          img.src = URL.createObjectURL(blob);
+          img.width = "200";
+          document.body.append(img);
+        }
+      }
+
+      catchPoem()
+        .then((poem) => {
+          document.getElementById("poem").innerText = poem;
+          console.log("yey POEM!");
+        })
+        .catch((error) => {
+          console.log("error!");
+          console.error(error);
+        });
+
+      async function catchPoem() {
+        const response = await fetch("poem.txt");
+        return await response.text();
+      }
+
+      console.log("About to fetch a rainbow");
+
+      catchRainbow()
+        .then((response) => {
+          console.log("yey!");
+        })
+        .catch((error) => {
+          console.log("error!");
+          console.error(error);
+        });
+
+      async function catchRainbow() {
+        const response = await fetch("rainbow.jpg");
+        const blob = await response.blob();
+        document.getElementById("rainbow").src = URL.createObjectURL(blob);
+      }
+
+      //tas pats kaip cia tik maziau eiluciu
+      // fetch('rainbow.jpg').then(response => {
+      //     console.log(response)
+      //     return response.blob()
+      // }).then(blob=> {
+      //     console.log(blob)
+      //     document.getElementById('rainbow').src = URL.createObjectURL(blob)
+      // })
+      // .catch(error =>{
+      //     console.log('error!')
+      //     console.error(error)
+      // });
+    </script>
+  </body>
+</html>
